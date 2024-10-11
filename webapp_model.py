@@ -1,5 +1,5 @@
 #webapp modellel
-#       python -m streamlit run webapp.py
+#       python -m streamlit run webapp_model.py
 import sklearn as sk
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
@@ -8,6 +8,9 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 import joblib
 import streamlit as st
+
+if 'kesz' not in st.session_state:
+    st.session_state.kesz = 0
 
 
 dataset = pd.read_csv("data.csv")
@@ -21,8 +24,14 @@ y = dataset["Personality"]
 X = dataset.drop('Personality', axis=1)
 X_train, X_test, y_train, y_test = train_test_split(X,y,train_size= 0.8, random_state= 42)
 
+
 model = RandomForestClassifier()
-model.fit(X_train, y_train)
+if st.session_state.kesz==0:
+    st.session_state.model = model.fit(X_train, y_train)
+    st.session_state.kesz = 1
+
+#model.fit(X_train, y_train)
+model = st.session_state.model
 y_pred = model.predict(X_test)
 
 st.title("Random Forest Classifier webapp")
