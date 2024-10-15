@@ -18,7 +18,11 @@ dataset = pd.read_csv("data.csv")
 dataset["Gender"] = dataset["Gender"].map({'Female': 1, 'Male': 0})
 le = LabelEncoder()
 dataset["Interest"] = le.fit_transform(dataset["Interest"])
+le_interrest_mapping = dict(zip(le.classes_, le.transform(le.classes_)))
+
 dataset["Personality"] = le.fit_transform(dataset["Personality"])
+le_personality_mapping = dict(zip(le.classes_, le.transform(le.classes_)))
+
 
 y = dataset["Personality"]
 X = dataset.drop('Personality', axis=1)
@@ -35,12 +39,13 @@ model = st.session_state.model
 y_pred = model.predict(X_test)
 
 st.title("Random Forest Classifier webapp")
-#st.write(dataset.head())
+st.write(dataset.head())
 #st.write(f'Pontosság: {accuracy:.2f}')
 
 #user adatok bekérése:
 st.title('User Feature Input Form')
-
+st.write(le_interrest_mapping)
+st.write(le_personality_mapping)
 age = st.number_input('Age', min_value=0, max_value=100, value=25)
 gender = st.selectbox('Gender', ['Male', 'Female'])
 education = st.selectbox('Education', ['No', 'Yes'])
@@ -50,10 +55,14 @@ thinking_score = st.slider('Thinking Score', min_value=0, max_value=10, value=5)
 judging_score = st.slider('Judging Score', min_value=0, max_value=10, value=5)
 interest = st.selectbox('Interest', ['Unknown', 'Sports', 'Arts', 'Technology', 'Other'])
 
+
+#{'Arts': 0, 'Others': 1, 'Sports': 2, 'Technology': 3, 'Unknown': 4}
+#{'ENFJ': 0, 'ENFP': 1, 'ENTJ': 2, 'ENTP': 3, 'ESFJ': 4, 'ESFP': 5, 'ESTJ': 6, 'ESTP': 7, 'INFJ': 8, 'INFP': 9, 'INTJ': 10, 'INTP': 11, 'ISFJ': 12, 'ISFP': 13, 'ISTJ': 14, 'ISTP': 15}
+
 #kapott adat átalakítása
 gender_num = 1 if gender == 'Male' else 0
 education_num = 1 if education == 'Yes' else 0
-interest_dict = {'Unknown': 0, 'Sports': 1, 'Arts': 2, 'Technology': 3, 'Other': 4}
+interest_dict = {'Arts': 0, 'Others': 1, 'Sports': 2, 'Technology': 3, 'Unknown': 4}
 interest_num = interest_dict[interest]
 
 data = {
@@ -72,4 +81,7 @@ st.write('DataFrame:')
 
 #ai gondolkodik és kitalálja hogy:
 prediction = model.predict(df)
+prediction_dict = ['ENFJ', 'ENFP', 'ENTJ', 'ENTP', 'ESFJ', 'ESFP', 'ESTJ', 'ESTP', 'INFJ', 'INFP', 'INTJ', 'INTP', 'ISFJ', 'ISFP', 'ISTJ', 'ISTP']
 st.write(f'Előrejelzés: {prediction[0]}')
+val = prediction[0]
+st.write(prediction_dict[val])
