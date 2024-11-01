@@ -9,8 +9,12 @@ from sklearn.metrics import accuracy_score
 import joblib
 import streamlit as st
 
-if 'kesz' not in st.session_state:
-    st.session_state.kesz = 0
+if 'model' not in st.session_state:
+    try:
+        st.session_state.model = joblib.load("random_forest_model.pkl")
+        st.session_state.kesz = 1
+    except FileNotFoundError:
+        st.session_state.kesz = 0
 
 
 dataset = pd.read_csv("data.csv")
@@ -29,12 +33,14 @@ X = dataset.drop('Personality', axis=1)
 X_train, X_test, y_train, y_test = train_test_split(X,y,train_size= 0.8, random_state= 42)
 
 
-model = RandomForestClassifier()
-if st.session_state.kesz==0:
+if st.session_state.kesz == 0:
+    model = RandomForestClassifier()
     st.session_state.model = model.fit(X_train, y_train)
+    joblib.dump(st.session_state.model, "random_forest_model.pkl")
     st.session_state.kesz = 1
 
 #model.fit(X_train, y_train)
+
 model = st.session_state.model
 y_pred = model.predict(X_test)
 
@@ -48,12 +54,12 @@ st.write(le_interrest_mapping)
 st.write(le_personality_mapping)
 age = st.number_input('Age', min_value=0, max_value=100, value=25)
 gender = st.selectbox('Gender', ['Male', 'Female'])
-education = st.selectbox('Education', ['No', 'Yes'])
-introversion_score = st.slider('Introversion Score', min_value=0, max_value=10, value=5)
-sensing_score = st.slider('Sensing Score', min_value=0, max_value=10, value=5)
-thinking_score = st.slider('Thinking Score', min_value=0, max_value=10, value=5)
-judging_score = st.slider('Judging Score', min_value=0, max_value=10, value=5)
-interest = st.selectbox('Interest', ['Unknown', 'Sports', 'Arts', 'Technology', 'Other'])
+education = st.selectbox('Education', ['No', 'Yes'],help='A binary variable, A value of YES indicates the individual has at least a graduate-level education (or higher), and NO indicates an undergraduate, high school level or Uneducated.')
+introversion_score = st.slider('Introversion Score', min_value=0, max_value=10, value=5, help='A continuous variable ranging from 0 to 10, representing the individuals tendency toward introversion versus extraversion. Higher scores indicate a greater tendency toward extraversion.')
+sensing_score = st.slider('Sensing Score', min_value=0, max_value=10, value=5,help='A continuous variable ranging from 0 to 10, representing the individuals preference for sensing versus intuition. Higher scores indicate a preference for sensing.')
+thinking_score = st.slider('Thinking Score', min_value=0, max_value=10, value=5,help='A continuous variable ranging from 0 to 10, indicating the individuals preference for thinking versus feeling. Higher scores indicate a preference for thinking.')
+judging_score = st.slider('Judging Score', min_value=0, max_value=10, value=5,help='A continuous variable ranging from 0 to 10, representing the individuals preference for judging versus perceiving. Higher scores indicate a preference for judging.')
+interest = st.selectbox('Interest', ['Unknown', 'Sports', 'Arts', 'Technology', 'Other'],help='A categorical variable representing the individuals primary area of interest.')
 
 
 #{'Arts': 0, 'Others': 1, 'Sports': 2, 'Technology': 3, 'Unknown': 4}
