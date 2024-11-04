@@ -105,21 +105,22 @@ data = {
 }
 df = pd.DataFrame(data)
 
-st.write('DataFrame:')
+
 
 #ai gondolkodik és kitalálja hogy:
 prediction = model.predict(df)
 
 predicted_personality = prediction_dict[prediction[0]]
-st.write(f'Előrejelzett személyiség: **[{predicted_personality}](#{predicted_personality})**')  # Kattintható hivatkozás
-
-st.markdown("### Személyiség leírás")
-if st.session_state.get("personality_selected") == predicted_personality:
-    st.write(personality_descriptions[predicted_personality])
+#st.write(f'Előrejelzett személyiség: **[{predicted_personality}](#{predicted_personality})**')
+st.write(f'Előrejelzés: {prediction[0]}')
 
 if st.button(f'Részletes leírás {predicted_personality} személyiségről'):
     st.session_state.personality_selected = predicted_personality
-    st.experimental_rerun()  # Frissíti az oldalt, hogy a leírás megjelenjen
+
+if 'personality_selected' in st.session_state:
+    st.markdown("### Személyiség leírás")
+    selected_personality = st.session_state.personality_selected
+    st.write(personality_descriptions[selected_personality])
 
 #st.write(f'Előrejelzés: {prediction[0]}')
 #val = prediction[0]
