@@ -44,14 +44,36 @@ if st.session_state.kesz == 0:
 model = st.session_state.model
 y_pred = model.predict(X_test)
 
+prediction_dict = ['ENFJ', 'ENFP', 'ENTJ', 'ENTP', 'ESFJ', 'ESFP', 'ESTJ', 'ESTP', 'INFJ', 'INFP', 'INTJ', 'INTP', 'ISFJ', 'ISFP', 'ISTJ', 'ISTP']
+
+personality_descriptions = {
+    'ENFJ': 'ENFJ (A Tanító): Nagyon empatikus, lelkes és támogató személyek, akik hisznek az együttműködés és a közösség erejében. Jó vezetők és motivátorok, akik másokat is arra inspirálnak, hogy kihozzák magukból a legjobbat.',
+    'ENFP': 'ENFP (A Kalandor): Kreatív, szociális és kíváncsi személyek, akik élvezik az új lehetőségek felfedezését és az emberek közötti kapcsolatok kialakítását. Nagyon jó intuícióval rendelkeznek, és szeretnek új ötleteket megvalósítani.',
+    'ENTJ': 'ENTJ (A Vezető): Határozott és céltudatos emberek, akik jól átlátják a nagyobb képet és kiváló szervezők. Gyakran vezető szerepben találják magukat, és képesek stratégiai gondolkodással másokat is inspirálni.',
+    'ENTP': 'ENTP (A Vita Kedvelő): Rugalmas és találékony személyek, akik szívesen vitatkoznak és új ötleteket keresnek. Szeretnek kihívásokkal szembenézni, és nem riadnak vissza az ismeretlentől.',
+    'ESFJ': 'ESFJ (A Gondoskodó): Melegszívű és szociális emberek, akik szívesen segítenek másokon és gyakran vesznek részt közösségi munkában. Értékelik a harmóniát és a szabályokat, és jól gondoskodnak a környezetükről.',
+    'ESFP': 'ESFP (A Szórakoztató): Energetikus és spontán személyek, akik szeretnek a jelenben élni és élvezik a társaságot. Gyakran a társaság középpontjában állnak, és örömmel osztják meg örömüket másokkal.',
+    'ESTJ': 'ESTJ (A Végrehajtó): Gyakorlatias és szervezett személyek, akik szeretik az irányítást és kiváló problémamegoldók. Hajlamosak szabályok szerint élni, és szívesen vállalják a felelősséget.',
+    'ESTP': 'ESTP (A Vállalkozó): Kalandvágyó és bátor emberek, akik szeretnek a gyakorlatban tapasztalni és gyakran keresik az izgalmakat. Képesek gyors döntéseket hozni és jól alkalmazkodnak a változáshoz.',
+    'INFJ': 'INFJ (A Tanácsadó): Intuitív, együttérző és idealista személyek, akik mélyen törődnek mások jólétével. Nagyon jó meglátásaik vannak az emberekkel kapcsolatban, és gyakran céljuk mások segítése.',
+    'INFP': 'INFP (Az Idealiszta): Érzékeny és idealista emberek, akik mélyen törődnek értékeikkel és mások érzéseivel. Hisznek az önkifejezésben és a belső harmónia elérésében.',
+    'INTJ': 'INTJ (A Stratéga): Analitikus és független gondolkodók, akik szeretnek hosszú távú terveket kidolgozni és stratégiai döntéseket hozni. Határozottak, és nem riadnak vissza a kihívásoktól.',
+    'INTP': 'INTP (A Gondolkodó): Logikus és kíváncsi emberek, akik élvezik az elméleti kérdések megoldását és az összetett problémák elemzését. Gyakran mélyen elmerülnek a gondolkodásban és az új ötletek keresésében.',
+    'ISFJ': 'ISFJ (A Védelmező): Csendes és gondoskodó személyek, akik hűségesek és megbízhatóak. Fontos számukra a másokról való gondoskodás és a hagyományok megőrzése.',
+    'ISFP': 'ISFP (A Művész): Nyugodt és érzékeny emberek, akik szeretik a kreativitást és a szépséget. Hajlamosak az önkifejezésre és szeretnek új élményeket keresni.',
+    'ISTJ': 'ISTJ (A Megfigyelő): Racionális és megbízható személyek, akik szeretik a struktúrát és a rendszert. Jó problémamegoldók és kiváló figyelmet fordítanak a részletekre.',
+    'ISTP': 'ISTP (A Mesterember): Gyakorlati és független emberek, akik jól dolgoznak eszközökkel és technológiával. Szeretnek közvetlen tapasztalatokat szerezni és megoldásokat találni.'
+}
+
+
 st.title("Random Forest Classifier webapp")
-st.write(dataset.head())
+#st.write(dataset.head())
 #st.write(f'Pontosság: {accuracy:.2f}')
 
 #user adatok bekérése:
-st.title('User Feature Input Form')
-st.write(le_interrest_mapping)
-st.write(le_personality_mapping)
+#st.title('User Feature Input Form')
+#st.write(le_interrest_mapping)
+#st.write(le_personality_mapping)
 age = st.number_input('Age', min_value=0, max_value=100, value=25)
 gender = st.selectbox('Gender', ['Male', 'Female'])
 education = st.selectbox('Education', ['No', 'Yes'],help='A binary variable, A value of YES indicates the individual has at least a graduate-level education (or higher), and NO indicates an undergraduate, high school level or Uneducated.')
@@ -87,7 +109,18 @@ st.write('DataFrame:')
 
 #ai gondolkodik és kitalálja hogy:
 prediction = model.predict(df)
-prediction_dict = ['ENFJ', 'ENFP', 'ENTJ', 'ENTP', 'ESFJ', 'ESFP', 'ESTJ', 'ESTP', 'INFJ', 'INFP', 'INTJ', 'INTP', 'ISFJ', 'ISFP', 'ISTJ', 'ISTP']
-st.write(f'Előrejelzés: {prediction[0]}')
-val = prediction[0]
-st.write(prediction_dict[val])
+
+predicted_personality = prediction_dict[prediction[0]]
+st.write(f'Előrejelzett személyiség: **[{predicted_personality}](#{predicted_personality})**')  # Kattintható hivatkozás
+
+st.markdown("### Személyiség leírás")
+if st.session_state.get("personality_selected") == predicted_personality:
+    st.write(personality_descriptions[predicted_personality])
+
+if st.button(f'Részletes leírás {predicted_personality} személyiségről'):
+    st.session_state.personality_selected = predicted_personality
+    st.experimental_rerun()  # Frissíti az oldalt, hogy a leírás megjelenjen
+
+#st.write(f'Előrejelzés: {prediction[0]}')
+#val = prediction[0]
+#st.write(prediction_dict[val])
