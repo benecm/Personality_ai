@@ -47,22 +47,22 @@ y_pred = model.predict(X_test)
 prediction_dict = ['ENFJ', 'ENFP', 'ENTJ', 'ENTP', 'ESFJ', 'ESFP', 'ESTJ', 'ESTP', 'INFJ', 'INFP', 'INTJ', 'INTP', 'ISFJ', 'ISFP', 'ISTJ', 'ISTP']
 
 personality_descriptions = {
-    'ENFJ': 'ENFJ (A Tanító): Nagyon empatikus, lelkes és támogató személyek, akik hisznek az együttműködés és a közösség erejében. Jó vezetők és motivátorok, akik másokat is arra inspirálnak, hogy kihozzák magukból a legjobbat.',
-    'ENFP': 'ENFP (A Kalandor): Kreatív, szociális és kíváncsi személyek, akik élvezik az új lehetőségek felfedezését és az emberek közötti kapcsolatok kialakítását. Nagyon jó intuícióval rendelkeznek, és szeretnek új ötleteket megvalósítani.',
-    'ENTJ': 'ENTJ (A Vezető): Határozott és céltudatos emberek, akik jól átlátják a nagyobb képet és kiváló szervezők. Gyakran vezető szerepben találják magukat, és képesek stratégiai gondolkodással másokat is inspirálni.',
-    'ENTP': 'ENTP (A Vita Kedvelő): Rugalmas és találékony személyek, akik szívesen vitatkoznak és új ötleteket keresnek. Szeretnek kihívásokkal szembenézni, és nem riadnak vissza az ismeretlentől.',
-    'ESFJ': 'ESFJ (A Gondoskodó): Melegszívű és szociális emberek, akik szívesen segítenek másokon és gyakran vesznek részt közösségi munkában. Értékelik a harmóniát és a szabályokat, és jól gondoskodnak a környezetükről.',
-    'ESFP': 'ESFP (A Szórakoztató): Energetikus és spontán személyek, akik szeretnek a jelenben élni és élvezik a társaságot. Gyakran a társaság középpontjában állnak, és örömmel osztják meg örömüket másokkal.',
-    'ESTJ': 'ESTJ (A Végrehajtó): Gyakorlatias és szervezett személyek, akik szeretik az irányítást és kiváló problémamegoldók. Hajlamosak szabályok szerint élni, és szívesen vállalják a felelősséget.',
-    'ESTP': 'ESTP (A Vállalkozó): Kalandvágyó és bátor emberek, akik szeretnek a gyakorlatban tapasztalni és gyakran keresik az izgalmakat. Képesek gyors döntéseket hozni és jól alkalmazkodnak a változáshoz.',
-    'INFJ': 'INFJ (A Tanácsadó): Intuitív, együttérző és idealista személyek, akik mélyen törődnek mások jólétével. Nagyon jó meglátásaik vannak az emberekkel kapcsolatban, és gyakran céljuk mások segítése.',
-    'INFP': 'INFP (Az Idealiszta): Érzékeny és idealista emberek, akik mélyen törődnek értékeikkel és mások érzéseivel. Hisznek az önkifejezésben és a belső harmónia elérésében.',
-    'INTJ': 'INTJ (A Stratéga): Analitikus és független gondolkodók, akik szeretnek hosszú távú terveket kidolgozni és stratégiai döntéseket hozni. Határozottak, és nem riadnak vissza a kihívásoktól.',
-    'INTP': 'INTP (A Gondolkodó): Logikus és kíváncsi emberek, akik élvezik az elméleti kérdések megoldását és az összetett problémák elemzését. Gyakran mélyen elmerülnek a gondolkodásban és az új ötletek keresésében.',
-    'ISFJ': 'ISFJ (A Védelmező): Csendes és gondoskodó személyek, akik hűségesek és megbízhatóak. Fontos számukra a másokról való gondoskodás és a hagyományok megőrzése.',
-    'ISFP': 'ISFP (A Művész): Nyugodt és érzékeny emberek, akik szeretik a kreativitást és a szépséget. Hajlamosak az önkifejezésre és szeretnek új élményeket keresni.',
-    'ISTJ': 'ISTJ (A Megfigyelő): Racionális és megbízható személyek, akik szeretik a struktúrát és a rendszert. Jó problémamegoldók és kiváló figyelmet fordítanak a részletekre.',
-    'ISTP': 'ISTP (A Mesterember): Gyakorlati és független emberek, akik jól dolgoznak eszközökkel és technológiával. Szeretnek közvetlen tapasztalatokat szerezni és megoldásokat találni.'
+    'ENFJ': 'ENFJ (The Teacher): Very empathetic, enthusiastic, and supportive people who believe in the power of cooperation and community. They are good leaders and motivators who inspire others to bring out their best.',
+    'ENFP': 'ENFP (The Adventurer): Creative, social, and curious individuals who enjoy exploring new opportunities and building connections. They have strong intuition and love bringing new ideas to life.',
+    'ENTJ': 'ENTJ (The Leader): Determined and goal-oriented people who see the big picture well and are excellent organizers. They often find themselves in leadership roles and inspire others with strategic thinking.',
+    'ENTP': 'ENTP (The Debater): Flexible and inventive individuals who enjoy debating and seeking new ideas. They love facing challenges and are not afraid of the unknown.',
+    'ESFJ': 'ESFJ (The Caregiver): Warm-hearted and social people who enjoy helping others and often participate in community work. They value harmony and rules, and they take good care of their surroundings.',
+    'ESFP': 'ESFP (The Entertainer): Energetic and spontaneous people who love living in the moment and enjoy being around others. They often find themselves at the center of attention and share their joy with others.',
+    'ESTJ': 'ESTJ (The Executive): Practical and organized individuals who like taking control and are excellent problem solvers. They tend to live by the rules and are willing to take on responsibility.',
+    'ESTP': 'ESTP (The Entrepreneur): Adventurous and bold people who love practical experience and often seek excitement. They can make quick decisions and adapt well to change.',
+    'INFJ': 'INFJ (The Counselor): Intuitive, compassionate, and idealistic people who deeply care about the well-being of others. They have a strong understanding of people and often aim to help others.',
+    'INFP': 'INFP (The Idealist): Sensitive and idealistic people who care deeply about their values and the feelings of others. They believe in self-expression and achieving inner harmony.',
+    'INTJ': 'INTJ (The Strategist): Analytical and independent thinkers who enjoy developing long-term plans and making strategic decisions. They are determined and not afraid of challenges.',
+    'INTP': 'INTP (The Thinker): Logical and curious people who enjoy solving theoretical questions and analyzing complex problems. They often immerse themselves in thinking and seeking new ideas.',
+    'ISFJ': 'ISFJ (The Protector): Quiet and caring individuals who are loyal and reliable. They value taking care of others and preserving traditions.',
+    'ISFP': 'ISFP (The Artist): Calm and sensitive people who appreciate creativity and beauty. They are inclined toward self-expression and enjoy seeking new experiences.',
+    'ISTJ': 'ISTJ (The Inspector): Rational and dependable individuals who like structure and order. They are good problem solvers and pay great attention to detail.',
+    'ISTP': 'ISTP (The Craftsman): Practical and independent people who are skilled at working with tools and technology. They like to gain hands-on experience and find solutions.'
 }
 
 
@@ -112,13 +112,13 @@ prediction = model.predict(df)
 
 predicted_personality = prediction_dict[prediction[0]]
 #st.write(f'Előrejelzett személyiség: **[{predicted_personality}](#{predicted_personality})**')
-st.write(f'Előrejelzés: {prediction[0]}')
+st.write(f'Előrejelzés: {prediction_dict[prediction[0]]}')
 
 if st.button(f'Részletes leírás {predicted_personality} személyiségről'):
     st.session_state.personality_selected = predicted_personality
 
 if 'personality_selected' in st.session_state:
-    st.markdown("### Személyiség leírás")
+    st.markdown("### Description:")
     selected_personality = st.session_state.personality_selected
     st.write(personality_descriptions[selected_personality])
 
