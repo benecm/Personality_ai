@@ -114,7 +114,7 @@ predicted_personality = prediction_dict[prediction[0]]
 #st.write(f'Előrejelzett személyiség: **[{predicted_personality}](#{predicted_personality})**')
 st.write(f'Előrejelzés: {prediction_dict[prediction[0]]}')
 
-if st.button(f'Részletes leírás {predicted_personality} személyiségről'):
+if st.button(f'More detailed description of the {predicted_personality} personality'):
     st.session_state.personality_selected = predicted_personality
 
 if 'personality_selected' in st.session_state:
