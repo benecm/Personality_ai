@@ -28,9 +28,25 @@ dataset["Personality"] = le.fit_transform(dataset["Personality"])
 le_personality_mapping = dict(zip(le.classes_, le.transform(le.classes_)))
 
 
-y = dataset["Personality"]
-X = dataset.drop('Personality', axis=1)
-X_train, X_test, y_train, y_test = train_test_split(X,y,train_size= 0.8, random_state= 42)
+#y = dataset["Personality"]
+#X = dataset.drop('Personality', axis=1)
+#X_train, X_test, y_train, y_test = train_test_split(X,y,train_size= 0.8, random_state= 42)
+
+#balanced sample:
+target_count = 250
+balanced_samples = []
+
+for class_label, group in dataset.groupby('Personality'):
+    sample_size = min(len(group), target_count)
+    balanced_samples.append(group.sample(n=sample_size, random_state=42))
+
+balanced_df = pd.concat(balanced_samples).reset_index(drop=True)
+
+y= balanced_df["Personality"]
+#balanced_df.drop('Introversion Score', axis=1)
+X = balanced_df.drop('Personality', axis=1)
+
+X_train, X_test, y_train, y_test= train_test_split(X,y, test_size=0.2, random_state=42)
 
 
 if st.session_state.kesz == 0:
@@ -38,8 +54,6 @@ if st.session_state.kesz == 0:
     st.session_state.model = model.fit(X_train, y_train)
     joblib.dump(st.session_state.model, "random_forest_model.pkl")
     st.session_state.kesz = 1
-
-#model.fit(X_train, y_train)
 
 model = st.session_state.model
 y_pred = model.predict(X_test)
@@ -67,13 +81,7 @@ personality_descriptions = {
 
 
 st.title("Random Forest Classifier webapp")
-#st.write(dataset.head())
-#st.write(f'Pontosság: {accuracy:.2f}')
 
-#user adatok bekérése:
-#st.title('User Feature Input Form')
-#st.write(le_interrest_mapping)
-#st.write(le_personality_mapping)
 age = st.number_input('Age', min_value=0, max_value=100, value=25)
 gender = st.selectbox('Gender', ['Male', 'Female'])
 education = st.selectbox('Education', ['No', 'Yes'],help='A binary variable, A value of YES indicates the individual has at least a graduate-level education (or higher), and NO indicates an undergraduate, high school level or Uneducated.')
@@ -109,10 +117,10 @@ df = pd.DataFrame(data)
 
 #ai gondolkodik és kitalálja hogy:
 prediction = model.predict(df)
-
 predicted_personality = prediction_dict[prediction[0]]
-#st.write(f'Előrejelzett személyiség: **[{predicted_personality}](#{predicted_personality})**')
-st.write(f'Előrejelzés: {prediction_dict[prediction[0]]}')
+
+st.write(f'Prediction: {prediction_dict[prediction[0]]}')
+#st.write(f'Accuracy: {accuracy:.2f}')
 
 if st.button(f'More detailed description of the {predicted_personality} personality'):
     st.session_state.personality_selected = predicted_personality
@@ -122,6 +130,3 @@ if 'personality_selected' in st.session_state:
     selected_personality = st.session_state.personality_selected
     st.write(personality_descriptions[selected_personality])
 
-#st.write(f'Előrejelzés: {prediction[0]}')
-#val = prediction[0]
-#st.write(prediction_dict[val])
